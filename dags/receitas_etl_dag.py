@@ -1,17 +1,17 @@
 # Importando bibliotecas
+import datetime
 from airflow import DAG
 from airflow.operators.python import PythonOperator
+import json
 from source.web_scraper import download_receitas
 from source.data_processor import load_and_process_data
 from source.organize import organize_files
-import datetime
-import json
-from airflow.utils.dates import days_ago
+from source.send_to_api import send_data_to_api
 
-def process_data():
-    # Organiza os arquivos
-    organize_files()
-    
+def process_send_data() -> None:
+    """
+    Função para organizar, processar e enviar os dados 
+    """
     # Processa os dados
     resultado_json = load_and_process_data()
     
@@ -26,25 +26,25 @@ def process_data():
     dic_json = json.dumps(dic, ensure_ascii=False)
     print(dic_json)
 
-# Definir argumentos padrão para a DAG
+    # Envia os dados para a API
+    #send_data_to_api(dic_json)
+
+# Argumentos padrão
 default_args = {
     'owner': 'airflow',
-    'start_date': days_ago(1),
+    'start_date': datetime.datetime(2024, 9, 2),
     'retries': 1,
 }
 
-# Inicializa a DAG
 with DAG(
-    dag_id='receitas_dag',  # Novo nome da DAG
-    default_args={"start_date": datetime.datetime(2023, 8, 31)},
-    description='DAG para baixar receitas do Portal da Transparencia e processar dados',
-    # schedule_interval='2 14 * * *',
-    schedule_interval='*/3 14 * * *',  # Rodar a cada 3 minutos a partir das 14:00 UTC
-    start_date=datetime.datetime(2023, 8, 31, 14, 5),   
-    catchup=False
+    dag_id='receitas_dag',
+    default_args=default_args,
+    description='Enviar dados do Portal para API',
+    schedule_interval='6 9 * * *',  # Rodar diariamente as 10:00
+    catchup=False,
 ) as dag:
-       
-    # Tarefa para baixar receitas
+    
+     # Tarefa para baixar receitas
     download_task = PythonOperator(
         task_id='download_receitas',
         python_callable=download_receitas,
@@ -56,11 +56,11 @@ with DAG(
         python_callable=organize_files,
     )
 
-    # Tarefa para processar os dados
+    # Tarefa para processar os dados e enviar para a API
     process_data_task = PythonOperator(
-        task_id='process_data',
-        python_callable=process_data,
+        task_id='process_send_data',
+        python_callable=process_send_data,
     )
 
     # Definir a ordem das tarefas na DAG
-    download_task >> organize_task >> process_data_task
+    download_task >> organize_task >> process_data_task 

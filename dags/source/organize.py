@@ -2,7 +2,7 @@
 import datetime
 import os
 
-def organize_files(downloads_dir="/opt/airflow/csv"):
+def organize_files(downloads_dir: str="/opt/airflow/csv") -> None:
     """
     Organiza e renomeia o arquivo de receitas baixado.
 

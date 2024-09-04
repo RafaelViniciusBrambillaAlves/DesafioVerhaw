@@ -5,26 +5,24 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 import os
 import time
-import datetime
 
-def download_receitas(downloads_dir="/home/seluser/csv"):
-    
+def download_receitas(downloads_dir: str ="/home/seluser/csv") -> None:
     """
     Realiza a automação da navegação no portal da Transparência para 
-    baixar o arquivo de receitas e renomeá-lo.
+    baixar o arquivo de receitas.
     
     :param downloads_dir: Diretório de downloads
     """
     # Opcoes do Chrome
     options = Options()
-    options.add_argument('--no-sandbox')
+    options.add_argument('--no-sandbox') 
     options.add_argument('--disable-dev-shm-usage')
 
     # Preferencias de Download
     prefs = {
         "download.default_directory": downloads_dir, # diretorio dos downloads
         "download.prompt_for_download": False, # desativa a confirmação de download do chrome
-        "directory_upgrade": True, # atualizas o diretorio padrao se ja existir
+        "directory_upgrade": True, # atualiza o diretorio padrao se ja existir
         "safebrowsing.enabled": True # ativa protecao contra downloads maliciosos
     }
     options.add_experimental_option("prefs", prefs)
@@ -67,6 +65,3 @@ def download_receitas(downloads_dir="/home/seluser/csv"):
 
         # Fecha o navegador
         driver.quit()
-    
-    
-

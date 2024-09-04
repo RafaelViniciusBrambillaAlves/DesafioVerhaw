@@ -3,15 +3,14 @@ import os
 import pandas as pd
 import datetime
 
-def load_and_process_data(directory_path="/opt/airflow/csv"):
+def load_and_process_data(directory_path: str="/opt/airflow/csv") -> None:
     """
     Carrega o arquivo CSV de receitas do diretório especificado,
-    seleciona colunas relevantes e converte para JSON.
+    seleciona colunas relevantes e converte os dados.
     
     :param directory_path: Caminho do diretório onde os arquivos CSV estão armazenados
     :return: Lista de dicionários com os dados processados ou None se não encontrar o arquivo  
     """
-    print('comecou')
     # Obtém a data de hoje - "YYYYMMDD"
     hoje = datetime.datetime.now().strftime("%Y%m%d")
     nome_arquivo_hoje = f"receita_{hoje}.csv"
