@@ -13,13 +13,13 @@ def process_send_data() -> None:
     Função para organizar, processar e enviar os dados 
     """
     # Processa os dados
-    resultado_json = load_and_process_data()
+    resultado = load_and_process_data()
     
     # Dicionário final
     dic = {
         "Autor": "Rafael Vinicius Brambilla Alves",
         "data atual": datetime.datetime.now().strftime("%Y%m%d"),
-        "Dados": resultado_json
+        "Dados": resultado
     }   
 
     # Converte para JSON
@@ -40,7 +40,7 @@ with DAG(
     dag_id='receitas_dag',
     default_args=default_args,
     description='Enviar dados do Portal para API',
-    schedule_interval='13 9 * * *',  # Rodar diariamente as 10:00
+    schedule_interval='0 10 * * *',  # Rodar diariamente as 10:00
     catchup=False,
 ) as dag:
     

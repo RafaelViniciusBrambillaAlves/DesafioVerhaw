@@ -10,7 +10,7 @@ import requests
 from airflow.utils.dates import days_ago
 
 # Função para enviar os dados para a API
-def send_data_to_api(dic_, url: str = "https://devbunnycofco.azurewebsites.net/acontador.aspx") -> None:
+def send_data_to_api(dic_json, url: str = "https://devbunnycofco.azurewebsites.net/acontador.aspx") -> None:
     """
     Envia os dados para a API através de um POST.
 
@@ -23,7 +23,7 @@ def send_data_to_api(dic_, url: str = "https://devbunnycofco.azurewebsites.net/a
     
     try:
         # Envia a requisição POST
-        response = requests.post(url, headers=headers, data=dic_)
+        response = requests.post(url, headers=headers, data=dic_json)
         response.raise_for_status()  # Levanta um erro para respostas de erro HTTP
         print(f"Dados enviados com sucesso: {response.status_code}")
     except requests.exceptions.RequestException as e:
