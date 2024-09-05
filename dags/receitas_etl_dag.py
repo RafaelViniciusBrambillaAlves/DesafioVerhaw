@@ -20,14 +20,14 @@ def process_send_data() -> None:
         "Autor": "Rafael Vinicius Brambilla Alves",
         "data atual": datetime.datetime.now().strftime("%Y%m%d"),
         "Dados": resultado_json
-    }
+    }   
 
     # Converte para JSON
     dic_json = json.dumps(dic, ensure_ascii=False)
     print(dic_json)
 
     # Envia os dados para a API
-    #send_data_to_api(dic_json)
+    send_data_to_api(dic_json)
 
 # Argumentos padrão
 default_args = {
@@ -40,7 +40,7 @@ with DAG(
     dag_id='receitas_dag',
     default_args=default_args,
     description='Enviar dados do Portal para API',
-    schedule_interval='6 9 * * *',  # Rodar diariamente as 10:00
+    schedule_interval='13 9 * * *',  # Rodar diariamente as 10:00
     catchup=False,
 ) as dag:
     

@@ -21,7 +21,7 @@ def load_and_process_data(directory_path: str="/opt/airflow/csv") -> None:
         files = os.listdir(directory_path)
         print(files)
 
-        # Verifica o arquivo de hoje
+        # Verifica o arquivo de hojee
         if nome_arquivo_hoje in files:
 
             arquivo_path = os.path.join(directory_path, nome_arquivo_hoje)
